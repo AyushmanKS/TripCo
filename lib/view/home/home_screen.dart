@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       body: Padding(
-        padding: scale.getPadding(vertical: 40, horizontal: 15),
+        padding: scale.getPadding(vertical: 40, horizontal: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
