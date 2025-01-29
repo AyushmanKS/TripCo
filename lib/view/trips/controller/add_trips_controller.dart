@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AddTripController extends GetxController {
-  RxBool hideCalender = false.obs;
+  RxBool hideCalender = true.obs;
   Rx<DateTime?> startDate = Rx<DateTime?>(null);
   Rx<DateTime?> endDate = Rx<DateTime?>(null);
   Rx<RangeSelectionMode> rangeSelectionMode = Rx<RangeSelectionMode>(RangeSelectionMode.toggledOn);
