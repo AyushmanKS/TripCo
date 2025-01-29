@@ -31,16 +31,15 @@ class AddTripScreen extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Obx(() =>IconButton(
-                  icon: Icon(addTripController.hideCalender.value ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_outlined),
+                Obx(() => IconButton(
+                  icon: Icon(addTripController.hideCalender.value ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_outlined, size: 30,),
                   onPressed: () {
                     addTripController.hideCalender.value = !addTripController.hideCalender.value;
                   },
                 ),)
               ],
             ),
-            SizedBox(height: scale.getScaledHeight(10)),
-            Obx(() => addTripController.hideCalender.value ? _calendar(addTripController) : SizedBox()),
+            Obx(() => addTripController.hideCalender.value ? _calendar(addTripController, scale) : SizedBox()),
             SizedBox(height: scale.getScaledHeight(20)),
             _selectedDates(addTripController, scale)
           ],
@@ -49,39 +48,42 @@ class AddTripScreen extends StatelessWidget {
     );
   }
 
-  Widget _calendar(AddTripController controller) {
-    return TableCalendar(
-      firstDay: DateTime.utc(2010, 10, 16),
-      lastDay: DateTime.utc(2030, 3, 14),
-      focusedDay: DateTime.now(),
-      selectedDayPredicate: (day) =>
-      controller.startDate.value != null &&
-          day.isAtSameMomentAs(controller.startDate.value!),
-      rangeStartDay: controller.startDate.value,
-      rangeEndDay: controller.endDate.value,
-      calendarFormat: CalendarFormat.month,
-      rangeSelectionMode: RangeSelectionMode.toggledOn,
-      onDaySelected: (selectedDay, focusedDay) => controller.onDaySelected(selectedDay, focusedDay),
-      calendarStyle: CalendarStyle(
-        todayDecoration: BoxDecoration(
-          color: Colors.blue.withValues(alpha: 0.3),
-          shape: BoxShape.circle,
-        ),
-        selectedDecoration: BoxDecoration(
-          color: Colors.blue,
-          shape: BoxShape.circle,
-        ),
-        rangeStartDecoration: BoxDecoration(
-          color: Colors.green,
-          shape: BoxShape.circle,
-        ),
-        rangeEndDecoration: BoxDecoration(
-          color: Colors.red,
-          shape: BoxShape.circle,
-        ),
-        withinRangeDecoration: BoxDecoration(
-          color: Colors.lightBlueAccent.withValues(alpha: 0.3),
-          shape: BoxShape.circle,
+  Widget _calendar(AddTripController controller, ScalingUtility scale) {
+    return Padding(
+      padding: scale.getPadding(top: 5),
+      child: TableCalendar(
+        firstDay: DateTime.utc(2010, 10, 16),
+        lastDay: DateTime.utc(2030, 3, 14),
+        focusedDay: DateTime.now(),
+        selectedDayPredicate: (day) =>
+        controller.startDate.value != null &&
+            day.isAtSameMomentAs(controller.startDate.value!),
+        rangeStartDay: controller.startDate.value,
+        rangeEndDay: controller.endDate.value,
+        calendarFormat: CalendarFormat.month,
+        rangeSelectionMode: RangeSelectionMode.toggledOn,
+        onDaySelected: (selectedDay, focusedDay) => controller.onDaySelected(selectedDay, focusedDay),
+        calendarStyle: CalendarStyle(
+          todayDecoration: BoxDecoration(
+            color: Colors.blue.withValues(alpha: 0.3),
+            shape: BoxShape.circle,
+          ),
+          selectedDecoration: BoxDecoration(
+            color: Colors.blue,
+            shape: BoxShape.circle,
+          ),
+          rangeStartDecoration: BoxDecoration(
+            color: Colors.green,
+            shape: BoxShape.circle,
+          ),
+          rangeEndDecoration: BoxDecoration(
+            color: Colors.red,
+            shape: BoxShape.circle,
+          ),
+          withinRangeDecoration: BoxDecoration(
+            color: Colors.lightBlueAccent.withValues(alpha: 0.3),
+            shape: BoxShape.circle,
+          ),
         ),
       ),
     );

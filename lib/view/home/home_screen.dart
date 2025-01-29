@@ -31,17 +31,17 @@ class HomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        profileController.setUserLoggedOut();
-                      },
-                      icon: Icon(
-                        Icons.logout,
-                        color: Colors.black,
-                        size: 28,
-                      ),
-                    ),
+                    // Spacer(),
+                    // IconButton(
+                    //   onPressed: () {
+                    //     profileController.setUserLoggedOut();
+                    //   },
+                    //   icon: Icon(
+                    //     Icons.logout,
+                    //     color: Colors.black,
+                    //     size: 28,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
