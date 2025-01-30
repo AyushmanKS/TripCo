@@ -20,7 +20,7 @@ class TimePickerWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Selected Time: ${controller.selectedHour.value.toString().padLeft(2, '0')}:${controller.selectedMinute.value.toString().padLeft(2, "0")} ${controller.selectedPeriod.value}",
+            "Selected Start Time: ${controller.selectedHour.value.toString().padLeft(2, '0')}:${controller.selectedMinute.value.toString().padLeft(2, "0")} ${controller.selectedPeriod.value}",
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           SizedBox(height: scale.getScaledHeight(5)),

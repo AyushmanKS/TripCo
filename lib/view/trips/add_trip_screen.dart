@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:travel_companion/view/trips/controller/add_trips_controller.dart';
+import '../../components/custom_button.dart';
 import '../../components/time_pickerwidget.dart';
 import '../../services/scaling_utils_service.dart';
 
@@ -16,6 +17,7 @@ class AddTripScreen extends StatelessWidget {
     final AddTripController addTripController = Get.put(AddTripController());
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Padding(
         padding: scale.getPadding(vertical: 40, horizontal: 5),
         child: Column(
@@ -44,47 +46,76 @@ class AddTripScreen extends StatelessWidget {
                         ),)
                       ],
                     ),
+                    _selectDestination(addTripController, scale),
                     Obx(() => addTripController.hideCalender.value ? _calendar(addTripController, scale) : SizedBox()),
                     SizedBox(height: scale.getScaledHeight(20)),
                     _selectedDates(addTripController, scale),
                     TimePickerWidget(),
+                    CustomButton(
+                      buttonText: "Proceed",
+                      buttonColor: Colors.purple,
+                      onTap: () {
+
+                      },
+                    )
                   ],
                 ),
               ),
             ),
-            Padding(
-              padding: scale.getPadding(bottom: 40),
-              child: GestureDetector(
-                onTap: (){},
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.purple,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                      child: Padding(
-                        padding: scale.getPadding(all: 10),
-                        child: Text('Proceed',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),
     );
   }
 
+  Widget _selectDestination(AddTripController controller, ScalingUtility scale) {
+    final List<String> destinations = controller.destinations;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Select Destination",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: scale.getScaledHeight(10)),
+        Autocomplete<String>(
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.isEmpty) {
+              return const Iterable<String>.empty();
+            }
+            return destinations.where((destination) =>
+                destination.toLowerCase().contains(textEditingValue.text.toLowerCase()));
+          },
+          onSelected: (String selection) {
+            controller.setDestination(selection);
+            FocusScope.of(Get.context!).unfocus();
+          },
+          fieldViewBuilder: (BuildContext context, TextEditingController textEditingController,
+              FocusNode focusNode, VoidCallback onFieldSubmitted) {
+            return Obx(() => TextFormField(
+              controller: textEditingController..text = controller.selectedDestination.value,
+              focusNode: focusNode,
+              decoration: InputDecoration(
+                hintText: "Enter destination",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                suffixIcon: Icon(Icons.location_on),
+              ),
+              onChanged: (value) {
+                controller.setDestination(value);
+              },
+            ));
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _calendar(AddTripController controller, ScalingUtility scale) {
     return Padding(
-      padding: scale.getPadding(top: 5),
+      padding: scale.getPadding(top: 2),
       child: TableCalendar(
         firstDay: DateTime.utc(2010, 10, 16),
         lastDay: DateTime.utc(2030, 3, 14),
