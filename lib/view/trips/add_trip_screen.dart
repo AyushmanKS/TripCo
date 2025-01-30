@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:travel_companion/view/trips/controller/add_trips_controller.dart';
+import '../../components/time_pickerwidget.dart';
 import '../../services/scaling_utils_service.dart';
 
 class AddTripScreen extends StatelessWidget {
@@ -18,30 +19,63 @@ class AddTripScreen extends StatelessWidget {
       body: Padding(
         padding: scale.getPadding(vertical: 40, horizontal: 5),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Text(
-                  'Add Trip',
-                  style: TextStyle(
-                    fontSize: 28,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Add Trip',
+                          style: TextStyle(
+                            fontSize: 28,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Spacer(),
+                        Obx(() => IconButton(
+                          icon: Icon(addTripController.hideCalender.value ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_outlined, size: 30,),
+                          onPressed: () {
+                            addTripController.hideCalender.value = !addTripController.hideCalender.value;
+                          },
+                        ),)
+                      ],
+                    ),
+                    Obx(() => addTripController.hideCalender.value ? _calendar(addTripController, scale) : SizedBox()),
+                    SizedBox(height: scale.getScaledHeight(20)),
+                    _selectedDates(addTripController, scale),
+                    TimePickerWidget(),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: scale.getPadding(bottom: 40),
+              child: GestureDetector(
+                onTap: (){},
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.purple,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                      child: Padding(
+                        padding: scale.getPadding(all: 10),
+                        child: Text('Proceed',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                   ),
                 ),
-                Spacer(),
-                Obx(() => IconButton(
-                  icon: Icon(addTripController.hideCalender.value ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_outlined, size: 30,),
-                  onPressed: () {
-                    addTripController.hideCalender.value = !addTripController.hideCalender.value;
-                  },
-                ),)
-              ],
-            ),
-            Obx(() => addTripController.hideCalender.value ? _calendar(addTripController, scale) : SizedBox()),
-            SizedBox(height: scale.getScaledHeight(20)),
-            _selectedDates(addTripController, scale)
+              ),
+            )
           ],
         ),
       ),

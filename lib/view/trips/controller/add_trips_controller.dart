@@ -7,6 +7,11 @@ class AddTripController extends GetxController {
   Rx<DateTime?> endDate = Rx<DateTime?>(null);
   Rx<RangeSelectionMode> rangeSelectionMode = Rx<RangeSelectionMode>(RangeSelectionMode.toggledOn);
 
+
+  RxInt selectedHour = 12.obs;
+  RxInt selectedMinute = 0.obs;
+  RxString selectedPeriod = 'AM'.obs;
+
   void onDaySelected(DateTime selectedDay, DateTime? focusedDay) {
     DateTime today = DateTime.now();
 
@@ -25,5 +30,11 @@ class AddTripController extends GetxController {
         endDate.value = null;
       }
     }
+  }
+
+  void setTime(int hour, int minute, String period) {
+    selectedHour.value = hour;
+    selectedMinute.value = minute;
+    selectedPeriod.value = period;
   }
 }

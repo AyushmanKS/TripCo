@@ -43,6 +43,7 @@ dependencies:
   animated_text_kit: ^4.2.3
   shared_preferences: ^2.4.0
   table_calendar: ^3.2.0
+  numberpicker: ^2.1.2
 
 dev_dependencies:
   flutter_test:
