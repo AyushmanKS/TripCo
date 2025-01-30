@@ -24,43 +24,45 @@ class AddTripScreen extends StatelessWidget {
           child: Column(
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Add Trip',
-                          style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Add Trip',
+                            style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Spacer(),
-                        Obx(() => IconButton(
-                          icon: Icon(addTripController.hideCalender.value ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_outlined, size: 30,),
-                          onPressed: () {
-                            addTripController.hideCalender.value = !addTripController.hideCalender.value;
-                          },
-                        ),)
-                      ],
-                    ),
-                    _selectDestination(addTripController, scale),
-                    Obx(() => addTripController.hideCalender.value ? _calendar(addTripController, scale) : SizedBox()),
-                    SizedBox(height: scale.getScaledHeight(10)),
-                    Text(
-                      "Select Date and Time",
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: _selectedDates(addTripController, scale)),
-                        SizedBox(width: scale.getScaledWidth(5)),
-                        Expanded(child: TimePickerWidget()),
-                      ],
-                    ),
-                  ],
+                          Spacer(),
+                          Obx(() => IconButton(
+                            icon: Icon(addTripController.hideCalender.value ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_outlined, size: 30,),
+                            onPressed: () {
+                              addTripController.hideCalender.value = !addTripController.hideCalender.value;
+                            },
+                          ),)
+                        ],
+                      ),
+                      _selectDestination(addTripController, scale),
+                      Obx(() => addTripController.hideCalender.value ? _calendar(addTripController, scale) : SizedBox()),
+                      SizedBox(height: scale.getScaledHeight(10)),
+                      Text(
+                        "Select Date and Time",
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(child: _selectedDates(addTripController, scale)),
+                          SizedBox(width: scale.getScaledWidth(5)),
+                          Expanded(child: TimePickerWidget()),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               CustomButton(
