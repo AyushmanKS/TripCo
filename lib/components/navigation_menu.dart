@@ -26,7 +26,7 @@ class NavigationMenuState extends State<NavigationMenu> {
       body: Obx(() => controller.screens[controller.selectedIndex.value]),
 
       bottomNavigationBar: Padding(
-        padding: scale.getPadding(horizontal: 10),
+        padding: scale.getPadding(horizontal: 5),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,

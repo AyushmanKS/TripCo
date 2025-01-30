@@ -5,6 +5,7 @@ class AddTripController extends GetxController {
   RxBool hideCalender = true.obs;
   Rx<DateTime?> startDate = Rx<DateTime?>(null);
   Rx<DateTime?> endDate = Rx<DateTime?>(null);
+  Rx<DateTime> focusedDay = DateTime.now().obs;
   Rx<RangeSelectionMode> rangeSelectionMode = Rx<RangeSelectionMode>(RangeSelectionMode.toggledOn);
 
   RxInt selectedHour = 12.obs;
@@ -13,7 +14,7 @@ class AddTripController extends GetxController {
 
   RxString selectedDestination = ''.obs;
 
-  void onDaySelected(DateTime selectedDay, DateTime? focusedDay) {
+  void onDaySelected(DateTime selectedDay, DateTime? newFocusedDay) {
     DateTime today = DateTime.now();
 
     if (selectedDay.isBefore(today)) {
@@ -31,6 +32,8 @@ class AddTripController extends GetxController {
         endDate.value = null;
       }
     }
+
+    focusedDay.value = newFocusedDay ?? selectedDay;
   }
 
   void setTime(int hour, int minute, String period) {

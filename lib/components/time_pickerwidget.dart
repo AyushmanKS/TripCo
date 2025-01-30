@@ -15,17 +15,12 @@ class TimePickerWidget extends StatelessWidget {
       ..setCurrentDeviceSize();
 
     return Obx(() => Padding(
-      padding: scale.getPadding(vertical: 10),
+      padding: scale.getPadding(vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Selected Start Time: ${controller.selectedHour.value.toString().padLeft(2, '0')}:${controller.selectedMinute.value.toString().padLeft(2, "0")} ${controller.selectedPeriod.value}",
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
-          SizedBox(height: scale.getScaledHeight(5)),
           Container(
-            padding: scale.getPadding(horizontal: 20, vertical: 10),
+            padding: scale.getPadding(horizontal: 20, vertical: 5),
             decoration: BoxDecoration(
               color: Color(0xFF396c2f),
               borderRadius: BorderRadius.circular(10),
