@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:travel_companion/routes/app_routes.dart';
 import 'package:travel_companion/view/trips/controller/add_trips_controller.dart';
 import '../../components/custom_button.dart';
 import '../../components/time_pickerwidget.dart';
@@ -69,7 +70,7 @@ class AddTripScreen extends StatelessWidget {
                 buttonText: "Proceed",
                 buttonColor: Colors.purple,
                 onTap: () {
-        
+                  Get.toNamed(AppRoutes.tripCompanionScreen);
                 },
               )
             ],
