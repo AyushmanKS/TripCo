@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TripCompanionController extends GetxController {
   final RxString userName = ''.obs;
   final RxString userEmail = ''.obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseDatabase _database = FirebaseDatabase.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   var selectedIndex = (-1).obs;
   var companions = <Member>[].obs;
 
@@ -104,6 +106,40 @@ class TripCompanionController extends GetxController {
     }
   }
 
+  Future<void> saveCompanionsToDatabase(String tripId) async {
+    // Debug: Print verification status of all companions
+    // for (var companion in companions) {
+    //   print("Companion ${companions.indexOf(companion) + 1} verified: ${companion.isVerified}");
+    // }
+
+    // Ensure that all companions except index 0 are verified
+    for (int i = 1; i < companions.length; i++) {  // Skip index 0 (myself)
+      if (!companions[i].isVerified) {
+        Get.snackbar("Error", "Please verify all companions before proceeding.");
+        return;
+      }
+    }
+
+    try {
+      // Prepare companion data for Firestore
+      Map<String, Map<String, String>> companionsData = {};
+      for (int i = 0; i < companions.length; i++) {
+        companionsData["companion_${i + 1}"] = {
+          "name": companions[i].name,
+          "email": companions[i].email,
+        };
+      }
+
+      // Update Firestore with companion details under the tripId
+      await _firestore.collection('trips').doc(tripId).update({
+        "trip_companions": companionsData,
+      });
+
+      Get.snackbar("Success", "Trip companions added successfully.");
+    } catch (e) {
+      Get.snackbar("Error", "Failed to save companions. Please try again.");
+    }
+  }
 }
 
 class Member {

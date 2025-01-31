@@ -6,8 +6,8 @@ import '../../components/companion_button.dart';
 import '../../services/scaling_utils_service.dart';
 
 class TripCompanionScreen extends StatelessWidget {
-  final TripCompanionController tripCompanionController =
-      Get.put(TripCompanionController());
+  final TripCompanionController tripCompanionController = Get.put(TripCompanionController());
+  final String tripId = Get.arguments;
 
   TripCompanionScreen({super.key});
 
@@ -53,7 +53,9 @@ class TripCompanionScreen extends StatelessWidget {
         child: CustomButton(
           buttonText: 'Proceed',
           buttonColor: Colors.purple,
-          onTap: () {},
+          onTap: () {
+            tripCompanionController.saveCompanionsToDatabase(tripId);
+          },
         ),
       ),
       resizeToAvoidBottomInset: false,
@@ -192,8 +194,7 @@ class TripCompanionScreen extends StatelessWidget {
                     ],
                   ),
                 ],
-              )
-,
+              ),
             );
           },
         ),

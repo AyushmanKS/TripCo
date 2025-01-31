@@ -59,11 +59,11 @@ class AddTripController extends GetxController {
       return;
     }
 
-    String tripName = "${selectedDestination.value}_trip";
+    //String tripName = "${selectedDestination.value}_trip";
     String startTime = "$selectedHour:${selectedMinute.toString().padLeft(2, '0')} $selectedPeriod";
 
     try {
-      await _firestore.collection(tripName).add({
+      DocumentReference tripRef = await _firestore.collection('trips').add({
         "destination": selectedDestination.value,
         "start_date": startDate.value,
         "end_date": endDate.value,
@@ -71,7 +71,9 @@ class AddTripController extends GetxController {
         "created_at": FieldValue.serverTimestamp(),
       });
 
-      Get.toNamed(AppRoutes.tripCompanionScreen);
+      String tripId = tripRef.id;
+
+      Get.toNamed(AppRoutes.tripCompanionScreen, arguments: tripId);
     } catch (e) {
       Get.snackbar("Error", "Failed to save trip. Please try again.");
     }
