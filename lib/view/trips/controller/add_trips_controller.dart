@@ -60,7 +60,7 @@ class AddTripController extends GetxController {
     }
 
     String tripName = "${selectedDestination.value}_trip";
-    String startTime = "$selectedHour:$selectedMinute $selectedPeriod";
+    String startTime = "$selectedHour:${selectedMinute.toString().padLeft(2, '0')} $selectedPeriod";
 
     try {
       await _firestore.collection(tripName).add({
