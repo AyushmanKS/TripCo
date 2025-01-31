@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:travel_companion/view/trips/model/destinations_model.dart';
+import 'package:travel_companion/routes/app_routes.dart';
 
 class AddTripController extends GetxController {
   RxBool hideCalender = true.obs;
@@ -13,6 +16,8 @@ class AddTripController extends GetxController {
   RxString selectedPeriod = 'AM'.obs;
 
   RxString selectedDestination = ''.obs;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void onDaySelected(DateTime selectedDay, DateTime? newFocusedDay) {
     DateTime today = DateTime.now();
@@ -46,33 +51,31 @@ class AddTripController extends GetxController {
     selectedDestination.value = destination;
   }
 
-  final List<String> destinations = [
-    // North America
-    "New York", "Los Angeles", "San Francisco", "Las Vegas", "Chicago", "Miami", "Washington D.C.",
-    "Toronto", "Vancouver", "Montreal", "Cancun", "Mexico City",
+  Future<void> saveTripToFirestore() async {
+    if (selectedDestination.value.isEmpty ||
+        startDate.value == null ||
+        endDate.value == null) {
+      Get.snackbar("Error", "Please complete all fields before proceeding.");
+      return;
+    }
 
-    // South America
-    "Buenos Aires", "Rio de Janeiro", "São Paulo", "Santiago", "Lima", "Bogotá", "Medellín", "Quito",
+    String tripName = "${selectedDestination.value}_trip";
+    String startTime = "$selectedHour:$selectedMinute $selectedPeriod";
 
-    // Europe
-    "London", "Paris", "Rome", "Milan", "Venice", "Barcelona", "Madrid", "Amsterdam", "Berlin",
-    "Munich", "Frankfurt", "Prague", "Vienna", "Budapest", "Warsaw", "Athens", "Zurich", "Geneva",
-    "Brussels", "Stockholm", "Copenhagen", "Dublin",
+    try {
+      await _firestore.collection(tripName).add({
+        "destination": selectedDestination.value,
+        "start_date": startDate.value,
+        "end_date": endDate.value,
+        "start_time": startTime,
+        "created_at": FieldValue.serverTimestamp(),
+      });
 
-    // Africa
-    "Cape Town", "Johannesburg", "Cairo", "Marrakech", "Nairobi", "Zanzibar", "Lagos", "Accra",
+      Get.toNamed(AppRoutes.tripCompanionScreen);
+    } catch (e) {
+      Get.snackbar("Error", "Failed to save trip. Please try again.");
+    }
+  }
 
-    // Asia
-    "Tokyo", "Kyoto", "Osaka", "Seoul", "Bangkok", "Phuket", "Chiang Mai", "Singapore",
-    "Kuala Lumpur", "Jakarta", "Bali", "Manila", "Ho Chi Minh City", "Hanoi", "Beijing",
-    "Shanghai", "Hong Kong", "Taipei", "Mumbai", "New Delhi", "Bengaluru", "Hyderabad",
-    "Goa", "Colombo",
-
-    // Australia & Oceania
-    "Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Auckland", "Wellington",
-    "Christchurch", "Suva",
-
-    // Middle East
-    "Dubai", "Abu Dhabi", "Doha", "Riyadh", "Jeddah", "Muscat", "Manama", "Istanbul", "Tel Aviv"
-  ];
+  final List<String> destinations = DestinationModel.destinations;
 }
