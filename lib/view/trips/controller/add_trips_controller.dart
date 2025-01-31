@@ -4,6 +4,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:travel_companion/view/trips/model/destinations_model.dart';
 import 'package:travel_companion/routes/app_routes.dart';
 
+import '../../home/controller/home_controller.dart';
+
 class AddTripController extends GetxController {
   RxBool hideCalender = true.obs;
   Rx<DateTime?> startDate = Rx<DateTime?>(null);
@@ -73,6 +75,8 @@ class AddTripController extends GetxController {
 
       String tripId = tripRef.id;
 
+      // updating HomeScreen
+      Get.find<HomeController>().fetchTrips();
       Get.toNamed(AppRoutes.tripCompanionScreen, arguments: tripId);
     } catch (e) {
       Get.snackbar("Error", "Failed to save trip. Please try again.");

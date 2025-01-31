@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:travel_companion/firebase_options.dart';
 import 'package:travel_companion/routes/app_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_companion/services/trips_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,8 @@ void main() async {
   bool isUserLoggedIn = prefs.getBool('isUserLoggedIn') ?? false;
 
   log("Main App started - isUserLoggedIn: $isUserLoggedIn");
+
+  Get.put(TripService());
 
   String initialRoute = isUserLoggedIn ? AppRoutes.navigationMenu : AppRoutes.splashScreen;
 
