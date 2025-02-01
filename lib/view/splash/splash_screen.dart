@@ -67,6 +67,7 @@ class SplashScreen extends StatelessWidget {
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontFamily: 'Fredoka',
                         ),
                       ),
                       TextSpan(
@@ -84,9 +85,10 @@ class SplashScreen extends StatelessWidget {
                 Text(
                   'Discover Destination, Create Memories!',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Color(0XFF82d8f1),
+                    color: Color(0XFF82D8F1),
+                    fontFamily: 'Fredoka',
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -115,9 +117,10 @@ class SplashScreen extends StatelessWidget {
                       child: Text(
                         'Sign In / Sign Up',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,
+                          fontFamily: 'Fredoka',
                         ),
                       ),
                     ),
