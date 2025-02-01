@@ -22,22 +22,26 @@ class HomeScreen extends StatelessWidget {
             Row(
               children: const [
                 Text(
-                  'Home',
+                  'My Trips',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 30,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Fredoka',
                   ),
                 ),
               ],
             ),
-            Expanded(
-              child: Obx(() => myTrips(scale)),
-            ),
+            //showCountdown(scale),
+            Obx(() => myTrips(scale)),
           ],
         ),
       ),
     );
+  }
+
+  Widget showCountdown(ScalingUtility scale) {
+    return Container(height: 100, width:double.infinity,color: Colors.red,);
   }
 
   Widget myTrips(ScalingUtility scale) {
@@ -48,47 +52,50 @@ class HomeScreen extends StatelessWidget {
       return const Center(
         child: Text(
           "No upcoming trips, add a trip now",
-          style: TextStyle(fontSize: 18, color: Colors.grey),
+          style: TextStyle(fontSize: 18, color: Colors.grey, fontFamily: 'Fredoka'),
         ),
       );
     }
-    return ListView.builder(
-      itemCount: homeController.trips.length,
-      itemBuilder: (context, index) {
-        var trip = homeController.trips[index];
-        return Container(
-          margin: scale.getMargin(vertical: 8, horizontal: 10),
-          padding: scale.getPadding(all: 12),
-          decoration: BoxDecoration(
-            color: Colors.blueAccent.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withValues(alpha: 0.3),
-                blurRadius: 4,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${trip['destination']} Trip",
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+    return Expanded(
+      child: ListView.builder(
+        itemCount: homeController.trips.length,
+        itemBuilder: (context, index) {
+          var trip = homeController.trips[index];
+          return Container(
+            margin: scale.getMargin(bottom: 10, left: 5, right: 5),
+            padding: scale.getPadding(all: 12),
+            decoration: BoxDecoration(
+              color: Colors.blueAccent.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.3),
+                  blurRadius: 4,
+                  spreadRadius: 1,
                 ),
-              ),
-              SizedBox(height: scale.getScaledHeight(8)),
-              Text("Start Date: ${trip['start_date'].toDate()}"),
-              Text("End Date: ${trip['end_date'].toDate()}"),
-              Text("Start Time: ${trip['start_time']}"),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${trip['destination']} Trip",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontFamily: 'Fredoka',
+                  ),
+                ),
+                SizedBox(height: scale.getScaledHeight(8)),
+                Text("Start Date: ${trip['start_date'].toDate()}",style: TextStyle(fontFamily: 'Fredoka'),),
+                Text("End Date: ${trip['end_date'].toDate()}",style: TextStyle(fontFamily: 'Fredoka'),),
+                Text("Start Time: ${trip['start_time']}",style: TextStyle(fontFamily: 'Fredoka'),),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 

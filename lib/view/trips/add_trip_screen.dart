@@ -36,6 +36,7 @@ class AddTripScreen extends StatelessWidget {
                               fontSize: 28,
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Fredoka',
                             ),
                           ),
                           Spacer(),
@@ -52,7 +53,7 @@ class AddTripScreen extends StatelessWidget {
                       SizedBox(height: scale.getScaledHeight(10)),
                       Text(
                         "Select Date and Time",
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18,fontFamily: 'Fredoka',),
                       ),
                       Row(
                         children: [
@@ -88,7 +89,7 @@ class AddTripScreen extends StatelessWidget {
         SizedBox(height: scale.getScaledHeight(10)),
         Text(
           "Select Destination",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'Fredoka'),
         ),
         SizedBox(height: scale.getScaledHeight(10)),
         Autocomplete<String>(
@@ -110,6 +111,7 @@ class AddTripScreen extends StatelessWidget {
               focusNode: focusNode,
               decoration: InputDecoration(
                 hintText: "Enter destination",
+                hintStyle: TextStyle(fontFamily: 'Fredoka'),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -175,18 +177,18 @@ class AddTripScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: scale.getPadding(left: 8, right: 8, top: 26, bottom: 26),
+        padding: scale.getPadding(left: 8, right: 8, top: 28, bottom: 28),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Obx(() => Text(
               "Start Date: ${controller.startDate.value != null ? controller.startDate.value!.toLocal().toString().split(' ')[0] : 'Not selected'}",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500,fontFamily: 'Fredoka'),
             )),
             SizedBox(height: scale.getScaledHeight(8)),
             Obx(() => Text(
               "End Date: ${controller.endDate.value != null ? controller.endDate.value!.toLocal().toString().split(' ')[0] : 'Not selected'}",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500,fontFamily: 'Fredoka'),
             )),
           ],
         ),

@@ -31,6 +31,7 @@ class CustomButton extends StatelessWidget {
                 fontSize: 20,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
+                fontFamily: 'Fredoka',
               ),
             ),
           ),

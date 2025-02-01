@@ -57,15 +57,34 @@ class NavigationMenuState extends State<NavigationMenu> {
                 GButton(
                   icon: Icons.home,
                   text: 'Home',
+                  textStyle: TextStyle(
+                    fontFamily: 'Fredoka',
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
                 GButton(
                   icon: Icons.add_circle_outline_rounded,
                   text: 'Add Trip',
+                  textStyle: TextStyle(
+                    fontFamily: 'Fredoka',
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
                 GButton(
                   icon: Icons.person,
                   text: 'Profile',
+                  textStyle: TextStyle(
+                    fontFamily: 'Fredoka',
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
+
               ],
             ),
           ),

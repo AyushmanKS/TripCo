@@ -21,7 +21,7 @@ class TripCompanionScreen extends StatelessWidget {
         title: const Text(
           'Add Trip Companions',
           style: TextStyle(
-              fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold,fontFamily: 'Fredoka'),
         ),
       ),
       body: SafeArea(
@@ -116,6 +116,7 @@ class TripCompanionScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                       color: Colors.blueAccent,
+                      fontFamily: 'Fredoka'
                     ),
                   ),
                   SizedBox(height: scale.getScaledHeight(8)),
@@ -134,6 +135,7 @@ class TripCompanionScreen extends StatelessWidget {
                           },
                           decoration: InputDecoration(
                             labelText: 'Name',
+                            labelStyle: TextStyle(fontFamily: 'Fredoka'),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -155,6 +157,7 @@ class TripCompanionScreen extends StatelessWidget {
                           },
                           decoration: InputDecoration(
                             labelText: 'Email',
+                            labelStyle: TextStyle(fontFamily: 'Fredoka'),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),

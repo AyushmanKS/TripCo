@@ -90,7 +90,7 @@ class TimePickerWidget extends StatelessWidget {
         ),
         child: Text(
           period,
-          style: const TextStyle(color: Colors.white, fontSize: 15),
+          style: const TextStyle(color: Colors.white, fontSize: 15,fontFamily: 'Fredoka'),
         ),
       ),
     );

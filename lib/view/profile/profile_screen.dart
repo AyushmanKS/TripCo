@@ -28,6 +28,7 @@ class ProfileScreen extends StatelessWidget {
                     fontSize: 28,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Fredoka'
                   ),
                 ),
                 Spacer(),
@@ -46,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: scale.getScaledHeight(140)),
             Center(
               child: Obx(() => CircleAvatar(
-                    radius: 80,
+                    radius: 70,
                     backgroundColor: Colors.blue,
                     child: profileController.userName.value.isEmpty
                         ? const CircularProgressIndicator()
@@ -56,8 +57,9 @@ class ProfileScreen extends StatelessWidget {
                                   .substring(0, 1)
                                   .toUpperCase(),
                               style: const TextStyle(
-                                fontSize: 110,
+                                fontSize: 100,
                                 color: Colors.white,
+                                fontFamily: 'Fredoka'
                               ),
                             ),
                           ),
@@ -85,6 +87,7 @@ class ProfileScreen extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontFamily: 'Fredoka'
                         ),
                         child: AnimatedTextKit(
                           animatedTexts: [
@@ -124,6 +127,7 @@ class ProfileScreen extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontFamily: 'Fredoka'
                         ),
                       ),
                     ],

@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.6.6
   firebase_core: ^3.10.1
-  google_fonts: ^6.2.1
   firebase_auth: ^5.4.1
   carousel_slider: ^5.0.0
   firebase_database: ^11.3.1
@@ -84,10 +83,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Fredoka
+      fonts:
+        - asset: fonts/Fredoka.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
