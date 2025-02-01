@@ -34,8 +34,9 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            showCountdown(scale),
             SizedBox(height: scale.getScaledHeight(10),),
+            Obx(() => showCountdown(scale)),
+            SizedBox(height: scale.getScaledHeight(5),),
             Obx(() => myTrips(scale)),
           ],
         ),
@@ -62,49 +63,56 @@ class HomeScreen extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Column(
-      children: futureTrips.map((trip) {
-        DateTime startDate = (trip['start_date'] as Timestamp).toDate();
-        int daysLeft = startDate.difference(today).inDays;
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.red,width: 1),
+        borderRadius: BorderRadius.circular(10),
+        color: Color(0xFFE57373).withValues(alpha: 0.1),
+      ),
+      child: Column(
+        children: futureTrips.map((trip) {
+          DateTime startDate = (trip['start_date'] as Timestamp).toDate();
+          int daysLeft = startDate.difference(today).inDays;
 
-        if (daysLeft > 0) {
-          return Container(
-            height: scale.getScaledHeight(50),
-            width: double.infinity,
-            margin: scale.getMargin(top: 10, left: 5, right: 5),
-            padding: scale.getPadding(all: 12),
-            decoration: BoxDecoration(
-              color: Colors.blueAccent.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withValues(alpha: 0.3),
-                  blurRadius: 4,
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.timer, color: Colors.blueAccent),
-                const SizedBox(width: 10),
-                Text(
-                  "${trip['destination']} trip starts in $daysLeft days!",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontFamily: 'Fredoka',
+          if (daysLeft > 0) {
+            return Container(
+              height: scale.getScaledHeight(50),
+              width: double.infinity,
+              margin: scale.getMargin(top: 5,bottom: 5, left: 5, right: 5),
+              padding: scale.getPadding(all: 12),
+              decoration: BoxDecoration(
+                color: Colors.blueAccent.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    blurRadius: 4,
+                    spreadRadius: 1,
                   ),
-                ),
-              ],
-            ),
-          );
-        }
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.timer, color: Colors.blueAccent),
+                  const SizedBox(width: 10),
+                  Text(
+                    "${trip['destination']} trip starts in $daysLeft days!",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontFamily: 'Fredoka',
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
 
-        return SizedBox.shrink();
-      }).toList(),
+          return SizedBox.shrink();
+        }).toList(),
+      ),
     );
   }
 
