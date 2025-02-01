@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../services/scaling_utils_service.dart';
@@ -32,7 +33,8 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            //showCountdown(scale),
+            showCountdown(scale),
+            SizedBox(height: scale.getScaledHeight(10),),
             Obx(() => myTrips(scale)),
           ],
         ),
@@ -41,7 +43,68 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget showCountdown(ScalingUtility scale) {
-    return Container(height: 100, width:double.infinity,color: Colors.red,);
+    if (homeController.trips.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    DateTime today = DateTime.now();
+
+    List futureTrips = homeController.trips
+        .where((trip) {
+      DateTime startDate = (trip['start_date'] as Timestamp).toDate();
+      return startDate.isAfter(today);
+    })
+        .toList();
+    futureTrips.sort((a, b) => (a['start_date'] as Timestamp).compareTo(b['start_date']));
+
+    if (futureTrips.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      children: futureTrips.map((trip) {
+        DateTime startDate = (trip['start_date'] as Timestamp).toDate();
+        int daysLeft = startDate.difference(today).inDays;
+
+        if (daysLeft > 0) {
+          return Container(
+            height: scale.getScaledHeight(50),
+            width: double.infinity,
+            margin: scale.getMargin(top: 10, left: 5, right: 5),
+            padding: scale.getPadding(all: 12),
+            decoration: BoxDecoration(
+              color: Colors.blueAccent.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.3),
+                  blurRadius: 4,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.timer, color: Colors.blueAccent),
+                const SizedBox(width: 10),
+                Text(
+                  "${trip['destination']} trip starts in $daysLeft days!",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontFamily: 'Fredoka',
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return SizedBox.shrink();
+      }).toList(),
+    );
   }
 
   Widget myTrips(ScalingUtility scale) {
