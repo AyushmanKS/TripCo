@@ -11,20 +11,18 @@ class HomeController extends GetxController {
     fetchTrips();
   }
 
-  Future<void> fetchTrips() async {
-    try {
+  void fetchTrips() {
+    FirebaseFirestore.instance
+        .collection('trips')
+        .orderBy('created_at', descending: true)
+        .snapshots()
+        .listen((snapshot) {
       isLoading.value = true;
-      // var snapshot = await FirebaseFirestore.instance.collection('trips').get();
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('trips')
-          .orderBy('created_at', descending: true) // list order
-          .get();
-
       trips.value = snapshot.docs.map((doc) => doc.data()).toList();
-    } catch (e) {
-      Get.snackbar("Error", "Failed to fetch trips");
-    } finally {
       isLoading.value = false;
-    }
+    }, onError: (error) {
+      Get.snackbar("Error", "Failed to fetch trips: $error");
+      isLoading.value = false;
+    });
   }
 }

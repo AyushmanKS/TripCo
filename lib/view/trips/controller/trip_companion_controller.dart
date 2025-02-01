@@ -3,8 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../home/controller/home_controller.dart';
-
 class TripCompanionController extends GetxController {
   final RxString userName = ''.obs;
   final RxString userEmail = ''.obs;
@@ -137,8 +135,6 @@ class TripCompanionController extends GetxController {
         "trip_companions": companionsData,
       });
 
-      // updating HomeScreen
-      Get.find<HomeController>().fetchTrips();
       Get.snackbar("Success", "Trip companions added successfully.");
     } catch (e) {
       Get.snackbar("Error", "Failed to save companions. Please try again.");
