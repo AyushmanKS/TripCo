@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../services/scaling_utils_service.dart';
 import 'controller/home_controller.dart';
 
@@ -119,11 +120,17 @@ class HomeScreen extends StatelessWidget {
         ),
       );
     }
+
+    final DateFormat dateFormat = DateFormat('d MMM yyyy');
+
     return Expanded(
       child: ListView.builder(
         itemCount: homeController.trips.length,
         itemBuilder: (context, index) {
           var trip = homeController.trips[index];
+          DateTime startDate = (trip['start_date'] as Timestamp).toDate();
+          DateTime endDate = (trip['end_date'] as Timestamp).toDate();
+
           return Container(
             margin: scale.getMargin(bottom: 10, left: 5, right: 5),
             padding: scale.getPadding(all: 12),
@@ -151,9 +158,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: scale.getScaledHeight(8)),
-                Text("Start Date: ${trip['start_date'].toDate()}",style: TextStyle(fontFamily: 'Fredoka'),),
-                Text("End Date: ${trip['end_date'].toDate()}",style: TextStyle(fontFamily: 'Fredoka'),),
-                Text("Start Time: ${trip['start_time']}",style: TextStyle(fontFamily: 'Fredoka'),),
+                Text("Start Date: ${dateFormat.format(startDate)}", style: TextStyle(fontFamily: 'Fredoka')),
+                Text("End Date: ${dateFormat.format(endDate)}", style: TextStyle(fontFamily: 'Fredoka')),
+                Text("Start Time: ${trip['start_time']}", style: TextStyle(fontFamily: 'Fredoka')),
               ],
             ),
           );
@@ -161,5 +168,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
 }
