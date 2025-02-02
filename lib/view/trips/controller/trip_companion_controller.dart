@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../../routes/app_routes.dart';
 
 class TripCompanionController extends GetxController {
   final RxString userName = ''.obs;
@@ -107,13 +111,12 @@ class TripCompanionController extends GetxController {
   }
 
   Future<void> saveCompanionsToDatabase(String tripId) async {
-    // Debug: Print verification status of all companions
-    // for (var companion in companions) {
-    //   print("Companion ${companions.indexOf(companion) + 1} verified: ${companion.isVerified}");
-    // }
+    if (tripId.isEmpty) {
+      Get.snackbar("Error", "Invalid trip ID.");
+      return;
+    }
 
-    // Ensure that all companions except index 0 are verified
-    for (int i = 1; i < companions.length; i++) {  // Skip index 0 (myself)
+    for (int i = 1; i < companions.length; i++) {
       if (!companions[i].isVerified) {
         Get.snackbar("Error", "Please verify all companions before proceeding.");
         return;
@@ -121,7 +124,6 @@ class TripCompanionController extends GetxController {
     }
 
     try {
-      // Prepare companion data for Firestore
       Map<String, Map<String, String>> companionsData = {};
       for (int i = 0; i < companions.length; i++) {
         companionsData["companion_${i + 1}"] = {
@@ -130,13 +132,14 @@ class TripCompanionController extends GetxController {
         };
       }
 
-      // Update Firestore with companion details under the tripId
-      await _firestore.collection('trips').doc(tripId).update({
+      await _firestore.collection('trips').doc(tripId).set({
         "trip_companions": companionsData,
-      });
+      }, SetOptions(merge: true));
 
-      Get.snackbar("Success", "Trip companions added successfully.");
+      // If update is successful, navigate to the next screen
+      Get.toNamed(AppRoutes.tripScheduleScreen);
     } catch (e) {
+      log("Firestore Error: $e");
       Get.snackbar("Error", "Failed to save companions. Please try again.");
     }
   }

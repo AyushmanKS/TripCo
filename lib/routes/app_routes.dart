@@ -6,6 +6,8 @@ import 'package:travel_companion/view/profile/profile_screen.dart';
 import 'package:travel_companion/view/splash/splash_screen.dart';
 import 'package:travel_companion/view/trips/trip_companion_screen.dart';
 
+import '../view/trips/trip_schedule_screen.dart';
+
 class AppRoutes {
   static const String splashScreen = '/splash_screen';
   static const String homeScreen = '/home_screen';
@@ -13,6 +15,7 @@ class AppRoutes {
   static const String profileScreen = '/profile_screen';
   static const String navigationMenu = '/navigation_menu';
   static const String tripCompanionScreen = '/trip_companion_screen';
+  static const String tripScheduleScreen = '/trip_schedule_screen';
 
   static List<GetPage> routes = [
     GetPage(
@@ -38,6 +41,10 @@ class AppRoutes {
     GetPage(
       name: tripCompanionScreen,
       page: () => TripCompanionScreen(),
+    ),
+    GetPage(
+      name: tripScheduleScreen,
+      page: () => TripScheduleScreen(),
     ),
   ];
 }
