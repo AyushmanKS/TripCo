@@ -59,7 +59,6 @@ class AddTripController extends GetxController {
       return;
     }
 
-    //String tripName = "${selectedDestination.value}_trip";
     String startTime = "$selectedHour:${selectedMinute.toString().padLeft(2, '0')} $selectedPeriod";
 
     try {
@@ -73,7 +72,14 @@ class AddTripController extends GetxController {
 
       String tripId = tripRef.id;
 
-      Get.toNamed(AppRoutes.tripCompanionScreen, arguments: tripId);
+      Get.toNamed(
+        AppRoutes.tripCompanionScreen,
+        arguments: {
+          "tripId": tripId,
+          "startDate": startDate.value,
+          "endDate": endDate.value,
+        },
+      );
     } catch (e) {
       Get.snackbar("Error", "Failed to save trip. Please try again.");
     }

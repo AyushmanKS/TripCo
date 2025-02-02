@@ -7,21 +7,28 @@ import '../../services/scaling_utils_service.dart';
 
 class TripCompanionScreen extends StatelessWidget {
   final TripCompanionController tripCompanionController = Get.put(TripCompanionController());
-  final String tripId = Get.arguments;
 
-  TripCompanionScreen({super.key});
+  final Map<String, dynamic> arguments = Get.arguments;
+  late final String tripId;
+  late final DateTime startDate;
+  late final DateTime endDate;
+
+  TripCompanionScreen({super.key}) {
+    tripId = arguments["tripId"];
+    startDate = arguments["startDate"];
+    endDate = arguments["endDate"];
+  }
 
   @override
   Widget build(BuildContext context) {
-    ScalingUtility scale = ScalingUtility(context: context)
-      ..setCurrentDeviceSize();
+    ScalingUtility scale = ScalingUtility(context: context)..setCurrentDeviceSize();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Add Trip Companions',
           style: TextStyle(
-              fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold,fontFamily: 'Fredoka'),
+              fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Fredoka'),
         ),
       ),
       body: SafeArea(
@@ -31,8 +38,7 @@ class TripCompanionScreen extends StatelessWidget {
             children: [
               companionButtons(tripCompanionController),
               Obx(() => tripCompanionController.selectedIndex.value != -1
-                  ? Expanded(
-                      child: memberInputFields(tripCompanionController, scale))
+                  ? Expanded(child: memberInputFields(tripCompanionController, scale))
                   : const SizedBox.shrink()),
             ],
           ),
@@ -41,10 +47,10 @@ class TripCompanionScreen extends StatelessWidget {
       floatingActionButton: Obx(() {
         return tripCompanionController.selectedIndex.value == 2
             ? FloatingActionButton(
-                onPressed: tripCompanionController.addMember,
-                backgroundColor: Colors.blueAccent,
-                child: const Icon(Icons.add, color: Colors.white),
-              )
+          onPressed: tripCompanionController.addMember,
+          backgroundColor: Colors.blueAccent,
+          child: const Icon(Icons.add, color: Colors.white),
+        )
             : const SizedBox.shrink();
       }),
       bottomNavigationBar: Container(
@@ -54,13 +60,14 @@ class TripCompanionScreen extends StatelessWidget {
           buttonText: 'Proceed',
           buttonColor: Colors.purple,
           onTap: () {
-            tripCompanionController.saveCompanionsToDatabase(tripId);
+            tripCompanionController.saveCompanionsToDatabase(tripId, startDate, endDate);
           },
         ),
       ),
       resizeToAvoidBottomInset: false,
     );
   }
+}
 
   Widget companionButtons(TripCompanionController controller) {
     return Row(
@@ -126,7 +133,7 @@ class TripCompanionScreen extends StatelessWidget {
                         child: TextField(
                           controller: index == 0
                               ? TextEditingController(
-                              text: tripCompanionController.userName.value)
+                              text: controller.userName.value)
                               : null,
                           onChanged: (value) {
                             if (index != 0) {
@@ -148,7 +155,7 @@ class TripCompanionScreen extends StatelessWidget {
                         child: TextField(
                           controller: index == 0
                               ? TextEditingController(
-                              text: tripCompanionController.userEmail.value)
+                              text: controller.userEmail.value)
                               : null,
                           onChanged: (value) {
                             if (index != 0) {
@@ -204,4 +211,3 @@ class TripCompanionScreen extends StatelessWidget {
       ),
     );
   }
-}

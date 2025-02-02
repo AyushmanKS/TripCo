@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../routes/app_routes.dart';
 
 class TripCompanionController extends GetxController {
@@ -110,7 +108,7 @@ class TripCompanionController extends GetxController {
     }
   }
 
-  Future<void> saveCompanionsToDatabase(String tripId) async {
+  Future<void> saveCompanionsToDatabase(String tripId, DateTime startDate, DateTime endDate) async {
     if (tripId.isEmpty) {
       Get.snackbar("Error", "Invalid trip ID.");
       return;
@@ -136,8 +134,13 @@ class TripCompanionController extends GetxController {
         "trip_companions": companionsData,
       }, SetOptions(merge: true));
 
-      // If update is successful, navigate to the next screen
-      Get.toNamed(AppRoutes.tripScheduleScreen);
+      // Navigate to trip schedule screen with tripId, startDate, and endDate
+      Get.toNamed(AppRoutes.tripScheduleScreen, arguments: {
+        'tripId': tripId,
+        'startDate': startDate,
+        'endDate': endDate,
+      });
+
     } catch (e) {
       log("Firestore Error: $e");
       Get.snackbar("Error", "Failed to save companions. Please try again.");
