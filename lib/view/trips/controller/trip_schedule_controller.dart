@@ -1,67 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 class TripScheduleController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  var selectedDay = 0.obs;
   var tripDays = <String>[].obs;
   var dayPlans = <String, String>{}.obs;
+  var controllers = <String, TextEditingController>{}.obs;
 
   void generateDays(DateTime startDate, DateTime endDate) {
     tripDays.clear();
     dayPlans.clear();
+    controllers.clear();
+
     int totalDays = endDate.difference(startDate).inDays + 1;
     for (int i = 0; i < totalDays; i++) {
       String dayLabel = "Day ${i + 1}, ${DateFormat('dd MMM').format(startDate.add(Duration(days: i)))}";
       tripDays.add(dayLabel);
       dayPlans[dayLabel] = "";
+      controllers[dayLabel] = TextEditingController();
     }
   }
 
-  // void saveSchedule(String tripId) async {
-  //   if (tripId.isEmpty) {
-  //     Get.snackbar("Error", "Invalid trip ID.");
-  //     return;
-  //   }
-  //
-  //   Map<String, String> finalPlans = {};
-  //   for (var day in tripDays) {
-  //     finalPlans[day] = dayPlans[day]!.isEmpty ? "No plan" : dayPlans[day]!;
-  //   }
-  //
-  //   try {
-  //     await _firestore.collection('trips').doc(tripId).set({
-  //       "trip_schedule": finalPlans,
-  //     }, SetOptions(merge: true));
-  //
-  //     Get.snackbar("Success", "Trip schedule saved successfully!");
-  //   } catch (e) {
-  //     Get.snackbar("Error", "Failed to save schedule. Try again.");
-  //   }
-  // }
-  void saveSchedule(String tripId) async {
+  void saveDayPlan(String tripId, String day) async {
     if (tripId.isEmpty) {
       Get.snackbar("Error", "Invalid trip ID.");
       return;
     }
 
-    List<Map<String, String>> finalPlans = [];
-    for (var i = 0; i < tripDays.length; i++) {
-      finalPlans.add({
-        'day': tripDays[i],
-        'plan': dayPlans[tripDays[i]]!.isEmpty ? "No plan" : dayPlans[tripDays[i]]!
-      });
-    }
+    String plan = controllers[day]?.text.trim() ?? "";
+    plan = plan.isEmpty ? "No plan for today" : plan;
 
     try {
       await _firestore.collection('trips').doc(tripId).set({
-        "trip_schedule": finalPlans,
+        "trip_schedule.$day": plan,
       }, SetOptions(merge: true));
 
-      Get.snackbar("Success", "Trip schedule saved successfully!");
+      dayPlans[day] = plan;
+      Get.snackbar("Success", "$day plan saved successfully!");
     } catch (e) {
-      Get.snackbar("Error", "Failed to save schedule. Try again.");
+      Get.snackbar("Error", "Failed to save $day plan. Try again.");
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_companion/components/custom_button.dart';
+import '../../routes/app_routes.dart';
 import '../../services/scaling_utils_service.dart';
 import 'controller/trip_schedule_controller.dart';
 
@@ -18,6 +19,7 @@ class TripScheduleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ScalingUtility scale = ScalingUtility(context: context)
       ..setCurrentDeviceSize();
+
     if (tripId == null || startDate == null || endDate == null) {
       return Scaffold(
         appBar: AppBar(title: const Text("Trip Scheduler")),
@@ -28,68 +30,85 @@ class TripScheduleScreen extends StatelessWidget {
     tripScheduleController.generateDays(startDate!, endDate!);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Trip Scheduler")),
-      body: Column(
-        children: [
-          SizedBox(
-            height: scale.getScaledHeight(50),
-            child: Obx(
-              () => ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: tripScheduleController.tripDays.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () =>
-                        tripScheduleController.selectedDay.value = index,
-                    child: Obx(()=>
-                      Container(
-                        padding: scale.getPadding(horizontal: 12, vertical: 10),
-                        margin: scale.getMargin(all: 5),
-                        decoration: BoxDecoration(
-                          color: tripScheduleController.selectedDay.value == index
-                              ? Colors.blue
-                              : Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(tripScheduleController.tripDays[index]),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Expanded(
-            child: Obx(
-              () => Padding(
-                padding: scale.getPadding(all: 10),
-                child: TextField(
-                  onChanged: (value) {
-                    tripScheduleController.dayPlans[
-                        tripScheduleController.tripDays[
-                            tripScheduleController.selectedDay.value]] = value;
-                  },
-                  maxLines: 6,
-                  decoration: InputDecoration(
-                    hintText:
-                        "Enter your plan for ${tripScheduleController.tripDays[tripScheduleController.selectedDay.value]}",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+      appBar: AppBar(
+        title: const Text(
+          'Trip Scheduler',
+          style: TextStyle(
+              fontSize: 22,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Fredoka'),
+        ),
       ),
-      bottomNavigationBar: Container(
-        height: scale.getScaledHeight(65),
-        padding: scale.getPadding(horizontal: 5, vertical: 10),
-        child: CustomButton(
-          buttonText: 'Proceed',
-          buttonColor: Colors.purple,
-          onTap: () {
-            tripScheduleController.saveSchedule(tripId!);
-          },
+      body: ListView.builder(
+        padding: scale.getPadding(all: 10),
+        itemCount: tripScheduleController.tripDays.length,
+        itemBuilder: (context, index) {
+          String day = tripScheduleController.tripDays[index];
+
+          return Card(
+            margin: scale.getMargin(bottom: 10),
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: scale.getPadding(all: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    day,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: scale.getScaledHeight(8)),
+                  GetBuilder<TripScheduleController>(
+                    id: day,
+                    // Unique ID for each day to update only this widget
+                    builder: (controller) {
+                      return TextField(
+                        controller: controller.controllers[day],
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          hintText: "Enter your plan for $day",
+                          border: OutlineInputBorder(),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: scale.getScaledHeight(10)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          tripScheduleController.saveDayPlan(tripId!, day);
+                        },
+                        child: Text("Save"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: Padding(
+        padding: scale.getPadding(horizontal: 10, vertical: 10),
+        child: SizedBox(
+          height: scale.getScaledHeight(50),
+          child: CustomButton(
+            buttonText: 'Proceed',
+            buttonColor: Colors.purple,
+            onTap: () {
+              // Navigator.push(context, MaterialPageRoute(builder: (context)=> PackingScreen()));
+              Get.toNamed(AppRoutes.packingScreen);
+            },
+          ),
         ),
       ),
     );

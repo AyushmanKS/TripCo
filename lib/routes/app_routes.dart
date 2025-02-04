@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:travel_companion/components/navigation_menu.dart';
 import 'package:travel_companion/view/authentication/authentication_screen.dart';
 import 'package:travel_companion/view/home/home_screen.dart';
+import 'package:travel_companion/view/packing/packing_screen.dart';
 import 'package:travel_companion/view/profile/profile_screen.dart';
 import 'package:travel_companion/view/splash/splash_screen.dart';
 import 'package:travel_companion/view/trips/trip_companion_screen.dart';
@@ -16,6 +17,7 @@ class AppRoutes {
   static const String navigationMenu = '/navigation_menu';
   static const String tripCompanionScreen = '/trip_companion_screen';
   static const String tripScheduleScreen = '/trip_schedule_screen';
+  static const String packingScreen = '/packing_screen';
 
   static List<GetPage> routes = [
     GetPage(
@@ -45,6 +47,10 @@ class AppRoutes {
     GetPage(
       name: tripScheduleScreen,
       page: () => TripScheduleScreen(),
+    ),
+    GetPage(
+      name: packingScreen,
+      page: () => PackingScreen(),
     ),
   ];
 }
