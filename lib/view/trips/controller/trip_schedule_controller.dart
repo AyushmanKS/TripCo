@@ -7,19 +7,20 @@ class TripScheduleController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   var tripDays = <String>[].obs;
   var dayPlans = <String, String>{}.obs;
-  var controllers = <String, TextEditingController>{}.obs;
+  final Map<String, TextEditingController> controllers = {}; 
 
   void generateDays(DateTime startDate, DateTime endDate) {
     tripDays.clear();
     dayPlans.clear();
-    controllers.clear();
 
     int totalDays = endDate.difference(startDate).inDays + 1;
     for (int i = 0; i < totalDays; i++) {
       String dayLabel = "Day ${i + 1}, ${DateFormat('dd MMM').format(startDate.add(Duration(days: i)))}";
       tripDays.add(dayLabel);
       dayPlans[dayLabel] = "";
-      controllers[dayLabel] = TextEditingController();
+
+      // Ensure the controller is only created once
+      controllers.putIfAbsent(dayLabel, () => TextEditingController());
     }
   }
 
