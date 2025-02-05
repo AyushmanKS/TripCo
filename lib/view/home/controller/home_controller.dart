@@ -18,7 +18,13 @@ class HomeController extends GetxController {
         .snapshots()
         .listen((snapshot) {
       isLoading.value = true;
-      trips.value = snapshot.docs.map((doc) => doc.data()).toList();
+
+      trips.value = snapshot.docs.map((doc) {
+        var trip = doc.data();
+        trip['tripId'] = doc.id;
+        return trip;
+      }).toList();
+
       isLoading.value = false;
     }, onError: (error) {
       Get.snackbar("Error", "Failed to fetch trips: $error");
