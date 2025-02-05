@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_companion/components/custom_button.dart';
+import 'package:travel_companion/routes/app_routes.dart';
 import 'package:travel_companion/view/packing/controller/packing_controller.dart';
 import '../../services/scaling_utils_service.dart';
 
@@ -81,7 +82,9 @@ class PackingScreen extends StatelessWidget {
         child: CustomButton(
           buttonText: 'Save',
           buttonColor: Colors.purple,
-          onTap: () {},
+          onTap: () {
+            Get.toNamed(AppRoutes.homeScreen);
+          },
         ),
       ),
       resizeToAvoidBottomInset: false,
