@@ -52,13 +52,13 @@ class PackingScreen extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.edit, color: Colors.blue),
                       onPressed: () {
-                        _showEditDialog(context, item["id"], item["name"]);
+                        _showEditDialog(context, item["id"], item["name"], scale);
                       },
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
-                        packingController.deletePackingItem(item["id"]);
+                        _showDeleteDialog(context, item["id"], scale);
                       },
                     ),
                   ],
@@ -70,7 +70,7 @@ class PackingScreen extends StatelessWidget {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showAddDialog(context);
+          _showAddDialog(context, scale);
         },
         backgroundColor: Colors.blueAccent,
         child: const Icon(Icons.add, color: Colors.white),
@@ -88,63 +88,167 @@ class PackingScreen extends StatelessWidget {
     );
   }
 
-  // Dialog to Add New Packing Item
-  void _showAddDialog(BuildContext context) {
+  void _showAddDialog(BuildContext context, ScalingUtility scale) {
     TextEditingController itemNameController = TextEditingController();
 
-    Get.defaultDialog(
-      title: "Add Packing Item",
-      content: Column(
-        children: [
-          TextField(
-            controller: itemNameController,
-            decoration: const InputDecoration(
-              hintText: "Enter item name",
-              border: OutlineInputBorder(),
-            ),
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Padding(
+          padding: scale.getPadding(horizontal: 16, vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Add Packing Item",
+                style: TextStyle(fontSize: 18,fontFamily: "Fredoka", fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: scale.getScaledHeight(12)),
+              TextField(
+                controller: itemNameController,
+                decoration: InputDecoration(
+                  hintText: "Enter item name",
+                  hintStyle: TextStyle(fontFamily: "Fredoka"),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                ),
+              ),
+              SizedBox(height: scale.getScaledHeight(16)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    child: Text("Cancel", style: TextStyle(color: Colors.red)),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (itemNameController.text.trim().isNotEmpty) {
+                        packingController.addPackingItem(itemNameController.text.trim());
+                        Get.back();
+                      }
+                    },
+                    child: Text("Add"),
+                  ),
+                ],
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              if (itemNameController.text.trim().isNotEmpty) {
-                packingController.addPackingItem(itemNameController.text.trim());
-                Get.back();
-              }
-            },
-            child: const Text("Add"),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  // Dialog to Edit Packing Item
-  void _showEditDialog(BuildContext context, String itemId, String currentName) {
+  void _showEditDialog(BuildContext context, String itemId, String currentName, ScalingUtility scale) {
     TextEditingController itemNameController = TextEditingController(text: currentName);
 
-    Get.defaultDialog(
-      title: "Edit Packing Item",
-      content: Column(
-        children: [
-          TextField(
-            controller: itemNameController,
-            decoration: const InputDecoration(
-              hintText: "Enter new name",
-              border: OutlineInputBorder(),
-            ),
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Padding(
+          padding: scale.getPadding(horizontal: 16, vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Edit Packing Item",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: scale.getScaledHeight(12)),
+              TextField(
+                controller: itemNameController,
+                decoration: InputDecoration(
+                  hintText: "Enter new name",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                ),
+              ),
+              SizedBox(height: scale.getScaledHeight(16)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    child: Text("Cancel", style: TextStyle(color: Colors.red)),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (itemNameController.text.trim().isNotEmpty) {
+                        packingController.editPackingItem(itemId, itemNameController.text.trim());
+                        Get.back();
+                      }
+                    },
+                    child: Text("Update"),
+                  ),
+                ],
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              if (itemNameController.text.trim().isNotEmpty) {
-                packingController.editPackingItem(itemId, itemNameController.text.trim());
-                Get.back();
-              }
-            },
-            child: const Text("Update"),
-          ),
-        ],
+        ),
       ),
     );
   }
+
+  void _showDeleteDialog(BuildContext context, String itemId, ScalingUtility scale) {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Padding(
+          padding: scale.getPadding(horizontal: 16, vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Are you sure you want to delete this item?",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: scale.getScaledHeight(12)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    child: Text("Cancel", style: TextStyle(color: Colors.black)),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      packingController.deletePackingItem(itemId);
+                      Get.back();
+                    },
+                    child: Text("Delete",style: TextStyle(color: Colors.white),),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 }

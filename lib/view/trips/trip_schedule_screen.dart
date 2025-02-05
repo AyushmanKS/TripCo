@@ -98,14 +98,13 @@ class TripScheduleScreen extends StatelessWidget {
         },
       ),
       bottomNavigationBar: Padding(
-        padding: scale.getPadding(horizontal: 10, vertical: 10),
+        padding: scale.getPadding(horizontal: 5, vertical: 10),
         child: SizedBox(
-          height: scale.getScaledHeight(50),
+          height: scale.getScaledHeight(45),
           child: CustomButton(
             buttonText: 'Proceed',
             buttonColor: Colors.purple,
             onTap: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context)=> PackingScreen()));
               Get.toNamed(AppRoutes.packingScreen);
             },
           ),
